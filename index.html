@@ -8,6 +8,60 @@
 </head>
 <body>
     <h1>Rock Paper Scissor</h1>
+    <h2>This game is going to be played completely from the console of the browser</h2>
+
+    <button type="button" onclick="game()">Launch Game</button>
+
+
+    <button type="button" onclick="oneRound()">oneRound</button>
+
     
+    
+<script>
+
+//  The concept is to return from function a value 1, 2 or 3
+//  0 = 'Rock' ; 1 ='Paper' ; 2 ='Scissors'
+//  0 vs 1 OR 1 vs 0 => 1 Win
+//  0 vs 2 or inverse => 0 Win
+//  1 vs 2 or inverse => 2 win
+
+function test(){
+    alert("this is a test");
+    do {
+        let playerChoice = parseInt(prompt("select 0 = 'Rock' ; 1 ='Paper' ; 2 ='Scissors'"));
+    } while (playerChoice == 0 || playerChoice == 1 || playerChoice == 2 || (isNaN(playerChoice) == false) );
+    
+}
+
+function playerPlay(){
+    let playerChoice = parseInt(prompt("select 0 = 'Rock' ; 1 ='Paper' ; 2 ='Scissors'"));
+
+    console.log(playerChoice + " type de data: " + typeof playerChoice)
+        
+    if (isNaN(playerChoice) == true) {
+        alert("wrong value please enter a numeric value");
+    } 
+    else if(playerChoice !== 0 || playerChoice !== 1 || playerChoice !== 2 ) {
+        alert("wrong value please enter 0, 1 or 2");
+    }
+    
+}
+
+function computerPlay() {
+    let computerChoice = Math.floor(Math.random() * 3);
+    return computerChoice
+}
+
+function oneRound() {
+    console.log("Computer: " + computerPlay());
+    console.log("Player: " +playerPlay());
+    
+}
+
+
+
+
+</script>
+
 </body>
 </html>
