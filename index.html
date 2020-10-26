@@ -3,63 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RockPaperScissors Project</title>
-    <link rel="stylesheet" href="main.css">
+    <title>Djé_RockPaperScissors Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="main.css">
+
+
 </head>
 <body>
-    <h1>Rock Paper Scissor</h1>
-    <h2>This game is going to be played completely from the console of the browser</h2>
-
-    <button type="button" onclick="game()">Launch Game</button>
-
-
-    <button type="button" onclick="oneRound()">oneRound</button>
-
+    <h1>ROCK PAPER SCISSORS</h1>
+    <h2>3 Rounds to Win the game !</h2>
+    <br>
+    <button onclick="initGame()" >Let's START</button>
+    <br> <br>
     
+    <div class="container">
+        <div class="game row">
+            <div class="Joueur col-md-6" >
+                <div class="PlayersNames">
+                    <h3 id='playerNameHtml'>?</h3>
+                </div>
+                <div class="PlayersScores">
+                    <h3 id='scorePlayerHtml'>-</h3>        
+                </div>
+                <div class="Player-img">
+                    <img src="img/pierre.png" alt="rock" id="img-rock" onclick="playerPlayClikImg(id)">
+                    <img src="img/feuille.png" alt="paper" id ="img-paper" onclick="playerPlayClikImg(id)">  
+                    <img src="img/ciseaux.png" alt="scissors" id="img-scissors" onclick="playerPlayClikImg(id)">
+                </div>
+            </div>
+            <div class="Computer col-md-6">
+                <div class="PlayersNames">
+                    <h3>Computer</h3>
+                </div>            
+                <div class="PlayersScores">
+                    <h3 id="scoreComputerHtml">-</h3>
+                </div>            
+                    <div class="Computer-img">
+                        <img src="img/what.png" alt="computer choice" id = "img-computer" height="79px">
+                    </div>
+            </div>
+        </div>
+    </div>
     
 <script>
 
-//  The concept is to return from function a value 1, 2 or 3
-//  0 = 'Rock' ; 1 ='Paper' ; 2 ='Scissors'
-//  0 vs 1 OR 1 vs 0 => 1 Win
-//  0 vs 2 or inverse => 0 Win
-//  1 vs 2 or inverse => 2 win
 
-function test(){
-    alert("this is a test");
+var scorePlayer = 0
+var scoreComputer = 0
+var playerName =''
+
+
+function initGame(){
+    scorePlayer = 0;
+    scoreComputer = 0;
+
     do {
-        let playerChoice = parseInt(prompt("select 0 = 'Rock' ; 1 ='Paper' ; 2 ='Scissors'"));
-    } while (playerChoice == 0 || playerChoice == 1 || playerChoice == 2 || (isNaN(playerChoice) == false) );
-    
+        playerName = prompt("What's your name ?")
+    } while (playerName === '');
+
+    document.getElementById("playerNameHtml").innerHTML = playerName;
+    document.getElementById("scorePlayerHtml").innerHTML = scorePlayer;
+    document.getElementById("scoreComputerHtml").innerHTML = scoreComputer;
+    document.getElementById("img-computer").src = "img/what.png";
+
+    alert('click an image to start !')
+   return playerName = playerName
 }
 
-function playerPlay(){
-    let playerChoice = parseInt(prompt("select 0 = 'Rock' ; 1 ='Paper' ; 2 ='Scissors'"));
+function updateScoreHtml(result){
+console.log('avant: ' +result +' / '+scorePlayer +' / '+ scoreComputer)
 
-    console.log(playerChoice + " type de data: " + typeof playerChoice)
-        
-    if (isNaN(playerChoice) == true) {
-        alert("wrong value please enter a numeric value");
-    } 
-    else if(playerChoice !== 0 || playerChoice !== 1 || playerChoice !== 2 ) {
-        alert("wrong value please enter 0, 1 or 2");
+    switch (result) {
+        case 'PLAYER WIN': scorePlayer++
+            break;
+        case 'COMPUTER WIN': scoreComputer++
+            break;
+        case 'DRAW':
+            break;
     }
+   
+    console.log('après: ' +result +' / '+scorePlayer +' / '+ scoreComputer)
+
+    document.getElementById("scorePlayerHtml").innerHTML=scorePlayer
+    document.getElementById("scoreComputerHtml").innerHTML=scoreComputer   
+
+    checkWinner()
+}
+
+function endGame(scorePlayer,scoreComputer){
+    if(scorePlayer === 3) {
+        alert('CONGRAT !!! Tou WIN the game')
+    } else if (scoreComputer === 3) {
+        alert('SORRY !!! Tou Loose this one')
+    }
+   
+    restartGame()
+}
+
+
+function playerPlayClikImg(id) {
+    
+    if(playerName === '') {
+        initGame()
+    }
+
+    let playerChoice =''
+           
+        switch (id) {
+        case 'img-rock': playerChoice = 0;
+        break;
+        case 'img-paper': playerChoice = 1;
+        break;
+        case 'img-scissors' : playerChoice = 2;
+        break;
+        }
+    
+    let computerChoice = computerPlay()
+
+    console.log('choix user: '+ playerChoice + ' Computer: ' + computerChoice)
+    
+    //on montre l'image du joueur computer
+    
+    switch (computerChoice) {
+        case 0: document.getElementById("img-computer").src = "img/pierre.png";
+            break;
+        case 1: document.getElementById("img-computer").src = "img/feuille.png";
+            break;
+        case 2: document.getElementById("img-computer").src = "img/ciseaux.png";
+            break;
+    }
+
+    
+    let result = playRoundResult(playerChoice,computerChoice )        
+    
+    alert(result)   
+        
+    updateScoreHtml(result)
+
     
 }
+
 
 function computerPlay() {
     let computerChoice = Math.floor(Math.random() * 3);
     return computerChoice
 }
 
-function oneRound() {
-    console.log("Computer: " + computerPlay());
-    console.log("Player: " +playerPlay());
-    
+function playRoundResult(playerChoice,computerChoice ){
+    let result =''
+
+    if(playerChoice === computerChoice) {
+        result = 'DRAW'
+    } 
+    else if (playerChoice === 0 && computerChoice === 2 ||
+                playerChoice === 1 && computerChoice === 0 ||                                             
+                playerChoice === 2 && computerChoice === 1
+                ) {
+        result ='PLAYER WIN'        
+    } 
+    else if(computerChoice === 0 && playerChoice === 2 ||
+            computerChoice === 1 && playerChoice === 0 ||
+            computerChoice === 2 && playerChoice === 1     
+    )
+    {
+        result ='COMPUTER WIN'
+    }
+    return result
 }
 
 
+function checkWinner(){
+    document.getElementById("scorePlayerHtml").innerHTML=scorePlayer
+    document.getElementById("scoreComputerHtml").innerHTML=scoreComputer   
 
+    if(scorePlayer === 3 || scoreComputer === 3) {
+        endGame(scorePlayer, scoreComputer )
+    }
+}
+function restartGame(){
+    let restart = prompt("Do you want to replay ? Y/N ")
+
+    if(restart ==='Y') {
+        initGame()
+    } else {
+        alert('OK. See u soon')
+        resetGame()
+    }
+}
+
+function resetGame(){
+
+    scorePlayer = 0
+    scoreComputer = 0
+    playerName = '???'
+
+    document.getElementById("playerNameHtml").innerHTML = playerName;
+    document.getElementById("scorePlayerHtml").innerHTML = scorePlayer;
+    document.getElementById("scoreComputerHtml").innerHTML = scoreComputer;
+    document.getElementById("img-computer").src = "img/what.png";
+}
 
 </script>
 
